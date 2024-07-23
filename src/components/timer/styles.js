@@ -1,14 +1,14 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
     container: {
-      justifyContent: 'center',
+      justifyContent: "center",
       marginBottom: 16,
       marginHorizontal: 8,
     },
     timerContent: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 14,
       color: colors.text.main,
     },

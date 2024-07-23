@@ -4,15 +4,15 @@
  * Displays all groups in a tab
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import PropTypes from 'prop-types';
+import React from "react";
+import { View } from "react-native";
+import PropTypes from "prop-types";
 
-import {pageLocations} from '../../utils/locations';
-import Group from '../group';
-import styles from './styles';
+import { pageLocations } from "../../utils/locations";
+import Group from "../group";
+import styles from "./styles";
 
-const Page = ({route: {key: page}}) => {
+const Page = ({ route: { key: page } }) => {
   return (
     <View style={styles.container}>
       {pageLocations[page].locationIds.map((locationId) => (

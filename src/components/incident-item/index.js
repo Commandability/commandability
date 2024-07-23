@@ -4,31 +4,32 @@
  * Displays a person in a group or incident location and sets a person as selected in redux and in local state on press
  */
 
-import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { View, Text, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   selectPersonById,
   selectSelectedPersonnel,
   selectTheme,
   selectGroupByLocationId,
-} from '../../redux/selectors';
+} from "../../redux/selectors";
 import {
   alertPersonToGroup,
   dealertPersonToGroup,
   togglePerson,
-} from '../../redux/actions';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
+} from "../../redux/actions";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
 
 const MS_IN_MINUTE = 60000;
 
-const IncidentItem = ({personId}) => {
+const IncidentItem = ({ personId }) => {
   const dispatch = useDispatch();
   const person = useSelector((state) => selectPersonById(state, personId));
-  const {firstName, lastName, badge, shift, organization, locationId} = person;
+  const { firstName, lastName, badge, shift, organization, locationId } =
+    person;
   const group = useSelector((state) =>
     selectGroupByLocationId(state, locationId),
   );
@@ -37,7 +38,7 @@ const IncidentItem = ({personId}) => {
   );
   const theme = useSelector((state) => selectTheme(state));
 
-  const {locationUpdateTime} = person;
+  const { locationUpdateTime } = person;
 
   const [minutesElapsed, setMinutesElapsed] = useState(
     Math.floor((Date.now() - locationUpdateTime) / MS_IN_MINUTE),
@@ -50,19 +51,22 @@ const IncidentItem = ({personId}) => {
   );
 
   useEffect(() => {
-    let intervalID = '';
-    const timeoutID = setTimeout(() => {
-      setMinutesElapsed(
-        Math.floor((Date.now() - locationUpdateTime) / MS_IN_MINUTE),
-      );
-      intervalID = setInterval(
-        () =>
-          setMinutesElapsed(
-            Math.floor((Date.now() - locationUpdateTime) / MS_IN_MINUTE),
-          ),
-        MS_IN_MINUTE,
-      );
-    }, MS_IN_MINUTE - ((Date.now() - locationUpdateTime) % MS_IN_MINUTE));
+    let intervalID = "";
+    const timeoutID = setTimeout(
+      () => {
+        setMinutesElapsed(
+          Math.floor((Date.now() - locationUpdateTime) / MS_IN_MINUTE),
+        );
+        intervalID = setInterval(
+          () =>
+            setMinutesElapsed(
+              Math.floor((Date.now() - locationUpdateTime) / MS_IN_MINUTE),
+            ),
+          MS_IN_MINUTE,
+        );
+      },
+      MS_IN_MINUTE - ((Date.now() - locationUpdateTime) % MS_IN_MINUTE),
+    );
 
     return () => {
       clearInterval(timeoutID);
@@ -71,7 +75,7 @@ const IncidentItem = ({personId}) => {
   }, [locationUpdateTime]);
 
   useEffect(() => {
-    const {alert} = group ?? {};
+    const { alert } = group ?? {};
 
     // If the item is in a group and an alert is active
     if (alert && minutesElapsed >= alert) {
@@ -104,25 +108,21 @@ const IncidentItem = ({personId}) => {
         <View style={styles.content}>
           <View style={styles.line}>
             <Text
-              style={[
-                styles.name,
-                alertedItem && styles.alertText,
-              ]}>{`${firstName} ${lastName}`}</Text>
+              style={[styles.name, alertedItem && styles.alertText]}
+            >{`${firstName} ${lastName}`}</Text>
             <Text
-              style={[
-                styles.minutesElapsed,
-                alertedItem && styles.alertText,
-              ]}>{`${minutesElapsed}`}</Text>
+              style={[styles.minutesElapsed, alertedItem && styles.alertText]}
+            >{`${minutesElapsed}`}</Text>
           </View>
           <View style={styles.line}>
             <Text style={[styles.label, alertedItem && styles.alertText]}>{`${
-              badge ? badge + ' ' : ''
+              badge ? badge + " " : ""
             }`}</Text>
             <Text style={[styles.label, alertedItem && styles.alertText]}>{`${
-              shift ? shift : ''
+              shift ? shift : ""
             }`}</Text>
             <Text style={[styles.label, alertedItem && styles.alertText]}>{`${
-              organization ? organization : ''
+              organization ? organization : ""
             }`}</Text>
           </View>
         </View>

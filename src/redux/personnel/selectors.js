@@ -2,9 +2,9 @@
  * Personnel selectors
  */
 
-import {createSelector} from 'reselect';
+import { createSelector } from "reselect";
 
-import * as personnel from './reducer';
+import * as personnel from "./reducer";
 
 export const selectPersonnelById = (state) =>
   personnel.selectPersonnelById(state.personnel);

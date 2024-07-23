@@ -4,13 +4,13 @@
  * Displays a group and handles its selection
  */
 
-import React, {useMemo} from 'react';
-import {Alert, TouchableOpacity, Text, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import PropTypes from 'prop-types';
+import React, { useMemo } from "react";
+import { Alert, TouchableOpacity, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import PropTypes from "prop-types";
 
-import GroupList from '../group-list';
+import GroupList from "../group-list";
 import {
   selectGroupByLocationId,
   createSelectPersonnelByLocationId,
@@ -18,7 +18,7 @@ import {
   selectSelectedPersonnel,
   selectTheme,
   selectSelectedGroupMode,
-} from '../../redux/selectors';
+} from "../../redux/selectors";
 import {
   toggleGroup,
   selectPerson,
@@ -27,14 +27,14 @@ import {
   dealertPersonToGroup,
   clearSelectedPersonnel,
   clearSelectedGroupMode,
-} from '../../redux/actions';
-import {staticLocations} from '../../utils/locations';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
+} from "../../redux/actions";
+import { staticLocations } from "../../utils/locations";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
 
-const {STAGING} = staticLocations;
+const { STAGING } = staticLocations;
 
-const Group = ({locationId}) => {
+const Group = ({ locationId }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const selectPersonnelByLocationId = useMemo(
@@ -76,35 +76,35 @@ const Group = ({locationId}) => {
   };
 
   const onGroupPressed = () => {
-    if (selectedGroupMode === 'add') {
+    if (selectedGroupMode === "add") {
       dispatch(toggleGroup(group));
-    } else if (selectedGroupMode === 'remove') {
+    } else if (selectedGroupMode === "remove") {
       Alert.alert(
-        'Remove group?',
-        'All personnel will be returned to staging.',
+        "Remove group?",
+        "All personnel will be returned to staging.",
         [
           {
-            text: 'Cancel',
+            text: "Cancel",
             onPress: () => {},
           },
           {
-            text: 'OK',
+            text: "OK",
             onPress: () => {
               dispatch(toggleGroup(group));
             },
           },
         ],
       );
-    } else if (selectedGroupMode === 'edit') {
-      const {navigate} = navigation;
-      navigate('EditGroupPrompt', {group});
+    } else if (selectedGroupMode === "edit") {
+      const { navigate } = navigation;
+      navigate("EditGroupPrompt", { group });
     } else {
       // Set each selected personId's new locationId to the current group
       selectedPersonnel.forEach((person) => {
-        const {personId} = person;
+        const { personId } = person;
 
         if (selectedGroup) {
-          const {alerted} = selectedGroup;
+          const { alerted } = selectedGroup;
           if (alerted.includes(personId)) {
             dispatch(dealertPersonToGroup(selectedGroup, person));
           }
@@ -125,17 +125,17 @@ const Group = ({locationId}) => {
     dispatch(clearSelectedGroupMode());
   };
 
-  const {name, isVisible, alerted} = group;
+  const { name, isVisible, alerted } = group;
 
   const renderOverlay = isVisible
-    ? selectedGroupMode === 'remove' ||
-      selectedGroupMode === 'edit' ||
+    ? selectedGroupMode === "remove" ||
+      selectedGroupMode === "edit" ||
       (selectedLocationId && selectedLocationId !== locationId)
       ? true
       : false
-    : selectedGroupMode === 'add'
-    ? true
-    : false;
+    : selectedGroupMode === "add"
+      ? true
+      : false;
 
   const colors = themeSelector(theme);
   const styles = createStyleSheet(colors);
@@ -147,7 +147,8 @@ const Group = ({locationId}) => {
       ) : null}
       {isVisible ? (
         <View
-          style={[styles.alertContainer, alerted.length !== 0 && styles.alert]}>
+          style={[styles.alertContainer, alerted.length !== 0 && styles.alert]}
+        >
           <TouchableOpacity onPress={onSelectAllPressed} style={styles.header}>
             <Text style={styles.headerContent}>{name.toUpperCase()}</Text>
           </TouchableOpacity>

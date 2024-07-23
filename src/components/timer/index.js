@@ -4,13 +4,13 @@
  * Handles the main incident timer
  */
 
-import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
-import {Text, View} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Text, View } from "react-native";
 
-import {selectTheme, selectInitialEpoch} from '../../redux/selectors';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
+import { selectTheme, selectInitialEpoch } from "../../redux/selectors";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
 
 const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
@@ -30,18 +30,18 @@ const Timer = () => {
   }, [initialEpoch]);
 
   const hour = (
-    '0' +
+    "0" +
     Math.floor(
       time / (MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR),
     )
   ).slice(-2);
   const minute = (
-    '0' +
+    "0" +
     (Math.floor(time / (MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE)) %
       SECONDS_IN_MINUTE)
   ).slice(-2);
   const second = (
-    '0' +
+    "0" +
     (Math.floor(time / MILLISECONDS_IN_SECOND) % SECONDS_IN_MINUTE)
   ).slice(-2);
 

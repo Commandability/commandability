@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -9,7 +9,7 @@ export default (colors) =>
       borderRadius: 8,
     },
     addPersonnelButton: {
-      alignSelf: 'center',
+      alignSelf: "center",
       margin: 8,
     },
   });

@@ -4,19 +4,19 @@
  * Handles the bar under the staging area, including the incident time, and the brightness and end incident buttons
  */
 
-import React from 'react';
-import {Alert, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React from "react";
+import { Alert, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import SmallButton from '../small-button';
-import {selectPersonnel, selectTheme} from '../../redux/selectors';
-import {toggleTheme, toEndStack, endIncident} from '../../redux/actions';
-import Timer from '../timer';
-import {staticLocations} from '../../utils/locations';
-import {DARK} from '../../utils/themes';
-import createStyleSheet from './styles';
+import SmallButton from "../small-button";
+import { selectPersonnel, selectTheme } from "../../redux/selectors";
+import { toggleTheme, toEndStack, endIncident } from "../../redux/actions";
+import Timer from "../timer";
+import { staticLocations } from "../../utils/locations";
+import { DARK } from "../../utils/themes";
+import createStyleSheet from "./styles";
 
-const {ROSTER, NEW_PERSONNEL, STAGING} = staticLocations;
+const { ROSTER, NEW_PERSONNEL, STAGING } = staticLocations;
 
 const BottomBar = () => {
   const dispatch = useDispatch();
@@ -33,22 +33,22 @@ const BottomBar = () => {
 
     if (!personnelAreInGroups) {
       Alert.alert(
-        'Personnel are still active',
-        'Please move all personnel to staging before ending the incident.',
+        "Personnel are still active",
+        "Please move all personnel to staging before ending the incident.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
     } else {
-      Alert.alert('Are you sure you want to end the incident?', '', [
+      Alert.alert("Are you sure you want to end the incident?", "", [
         {
-          text: 'Cancel',
+          text: "Cancel",
           onPress: () => {},
         },
         {
-          text: 'OK',
+          text: "OK",
           onPress: () => {
             dispatch(endIncident());
             dispatch(toEndStack());
@@ -68,7 +68,7 @@ const BottomBar = () => {
       <View style={styles.options}>
         <SmallButton
           onPress={onThemePressed}
-          text={theme === DARK ? 'LIGHT THEME' : 'DARK THEME'}
+          text={theme === DARK ? "LIGHT THEME" : "DARK THEME"}
           style={styles.bottomButton}
         />
         <SmallButton

@@ -9,23 +9,23 @@ import {
   CLEAR_SELECTED_PERSONNEL,
   TOGGLE_GROUP_MODE,
   CLEAR_SELECTED_GROUP_MODE,
-} from '../types';
+} from "../types";
 
 // Previously selected persons will be deselected
 export const togglePerson = (person) => ({
   type: TOGGLE_PERSON,
-  payload: {person},
+  payload: { person },
 });
 
 // Previously selected persons will remain selected
 export const selectPerson = (person) => ({
   type: SELECT_PERSON,
-  payload: {person},
+  payload: { person },
 });
 
 export const deselectPerson = (person) => ({
   type: DESELECT_PERSON,
-  payload: {person},
+  payload: { person },
 });
 
 export const clearSelectedPersonnel = () => ({
@@ -34,7 +34,7 @@ export const clearSelectedPersonnel = () => ({
 
 export const toggleGroupMode = (groupMode) => ({
   type: TOGGLE_GROUP_MODE,
-  payload: {groupMode},
+  payload: { groupMode },
 });
 
 export const clearSelectedGroupMode = () => ({

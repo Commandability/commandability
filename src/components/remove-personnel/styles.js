@@ -1,13 +1,13 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
     overlay: {
       backgroundColor: colors.overlay,
-      position: 'absolute',
+      position: "absolute",
       zIndex: 1,
-      width: '100%',
-      height: '100%',
+      width: "100%",
+      height: "100%",
       opacity: 0.2,
       borderRadius: 8,
     },
@@ -17,13 +17,13 @@ export default (colors) =>
       borderRadius: 8,
     },
     remove: {
-      alignItems: 'center',
+      alignItems: "center",
       backgroundColor: colors.background.three,
       borderRadius: 8,
     },
     header: {
       margin: 4,
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 14,
       color: colors.text.main,
       letterSpacing: 0.5,

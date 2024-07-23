@@ -2,7 +2,7 @@
  * HomeScreen component
  */
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -10,20 +10,20 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import NetInfo from '@react-native-community/netinfo';
-import {ErrorBoundary} from 'react-error-boundary';
-import Icon from 'react-native-vector-icons/Feather';
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import NetInfo from "@react-native-community/netinfo";
+import { ErrorBoundary } from "react-error-boundary";
+import Icon from "@expo/vector-icons/Feather";
 
-import ErrorFallbackScreen from '../error-fallback-screen';
+import ErrorFallbackScreen from "../error-fallback-screen";
 import {
   selectReportData,
   selectGroupsAreConfigured,
   selectTheme,
-} from '../../redux/selectors';
+} from "../../redux/selectors";
 import {
   startIncident,
   signOut,
@@ -33,17 +33,17 @@ import {
   configureGroups,
   updateConfiguration,
   toggleTheme,
-} from '../../redux/actions';
-import {START_INCIDENT, END_INCIDENT} from '../../redux/types';
+} from "../../redux/actions";
+import { START_INCIDENT, END_INCIDENT } from "../../redux/types";
 import {
   getNumberOfReports,
   uploadReports,
   deleteAllReports,
-} from '../../utils/report-manager';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
-import createStyleSheet from './styles';
+} from "../../utils/report-manager";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
+import createStyleSheet from "./styles";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -78,13 +78,13 @@ const HomeScreen = () => {
   }, []);
 
   const onStartIncidentPressed = () => {
-    Alert.alert('Are you sure you want to start a new incident?', '', [
+    Alert.alert("Are you sure you want to start a new incident?", "", [
       {
-        text: 'Cancel',
+        text: "Cancel",
         onPress: () => {},
       },
       {
-        text: 'OK',
+        text: "OK",
         onPress: () => {
           if (!groupsAreConfigured) {
             dispatch(configureGroups());
@@ -98,14 +98,14 @@ const HomeScreen = () => {
   };
 
   const onUpdateConfigurationPressed = async () => {
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -117,18 +117,18 @@ const HomeScreen = () => {
       await dispatch(updateConfiguration());
 
       Alert.alert(
-        'Account configuration updated',
+        "Account configuration updated",
         "The latest configuration data has been loaded from your organization's account.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
     } catch (error) {
-      Alert.alert('Error', error, [
+      Alert.alert("Error", error.message, [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
     }
@@ -136,14 +136,14 @@ const HomeScreen = () => {
   };
 
   const onUploadReportsPressed = async () => {
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -152,11 +152,11 @@ const HomeScreen = () => {
 
     if (!numberOfReports) {
       Alert.alert(
-        'No reports on device',
-        'There were no reports on the device to upload.',
+        "No reports on device",
+        "There were no reports on the device to upload.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -166,24 +166,24 @@ const HomeScreen = () => {
     setLoading(true);
     let uploadSuccess = false;
     try {
-      const {currentUser} = auth();
-      const {uid} = currentUser;
+      const { currentUser } = auth();
+      const { uid } = currentUser;
       const documentSnapshot = await firestore()
-        .collection('users')
+        .collection("users")
         .doc(uid)
         .get();
       const {
-        account: {expirationTimestamp},
+        account: { expirationTimestamp },
       } = documentSnapshot.data();
       const expirationDate = expirationTimestamp?.toDate();
 
       if (!expirationDate || Date.now() > expirationDate) {
         Alert.alert(
-          'Report upload disabled',
-          'Please check your account status for additional information.',
+          "Report upload disabled",
+          "Please check your account status for additional information.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
@@ -195,11 +195,11 @@ const HomeScreen = () => {
         await deleteAllReports();
 
         Alert.alert(
-          'Report upload completed successfully',
-          'All reports have been uploaded and removed from the device.',
+          "Report upload completed successfully",
+          "All reports have been uploaded and removed from the device.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
@@ -207,18 +207,18 @@ const HomeScreen = () => {
     } catch (error) {
       if (uploadSuccess) {
         Alert.alert(
-          'Error removing reports from device',
-          'All reports were successfully uploaded, but were not successfully removed from the device.',
+          "Error removing reports from device",
+          "All reports were successfully uploaded, but were not successfully removed from the device.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
       } else {
-        Alert.alert('Upload failed', error, [
+        Alert.alert("Upload failed", error.message, [
           {
-            text: 'OK',
+            text: "OK",
           },
         ]);
       }
@@ -234,36 +234,37 @@ const HomeScreen = () => {
   const onSignOutPressed = async () => {
     if (numberOfReports) {
       Alert.alert(
-        'Reports on device',
-        'Please upload all reports before signing out.',
+        "Reports on device",
+        "Please upload all reports before signing out.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
     } else {
       Alert.alert(
-        'Are you sure you want to sign out?',
-        'All account configuration and report data will be removed from the device.',
+        "Are you sure you want to sign out?",
+        "All account configuration and report data will be removed from the device.",
         [
           {
-            text: 'Cancel',
+            text: "Cancel",
             onPress: () => {},
           },
           {
-            text: 'OK',
+            text: "OK",
             onPress: async () => {
               setLoading(true);
               try {
                 await dispatch(signOut());
                 dispatch(resetApp());
               } catch (error) {
-                Alert.alert('Error', error, [
+                Alert.alert("Error", error.message, [
                   {
-                    text: 'OK',
+                    text: "OK",
                   },
                 ]);
+                setLoading(false);
               }
             },
           },
@@ -287,27 +288,30 @@ const HomeScreen = () => {
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[loading, numberOfReports]}>
+      resetKeys={[loading, numberOfReports]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <View style={styles.container}>
         <View style={styles.opacityGrid}>
           <TouchableOpacity
             style={[styles.opacity]}
-            onPress={onStartIncidentPressed}>
+            onPress={onStartIncidentPressed}
+          >
             <Icon
               name="alert-triangle"
               style={[styles.opacityText, styles.opacityIcon]}
             />
-            <Text style={[styles.opacityText]}>Start incident</Text>
+            <Text style={styles.opacityText}>Start incident</Text>
           </TouchableOpacity>
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.opacity}
-              onPress={onUpdateConfigurationPressed}>
+              onPress={onUpdateConfigurationPressed}
+            >
               <Icon
                 name="rotate-cw"
                 style={[styles.opacityText, styles.opacityIcon]}
@@ -319,7 +323,8 @@ const HomeScreen = () => {
                 styles.opacity,
                 numberOfReports && styles.outlinedOpacity,
               ]}
-              onPress={onUploadReportsPressed}>
+              onPress={onUploadReportsPressed}
+            >
               <Icon
                 name="upload"
                 style={[styles.opacityText, styles.opacityIcon]}
@@ -331,27 +336,30 @@ const HomeScreen = () => {
                   numberOfReports
                     ? styles.reportsOnDeviceContainer
                     : styles.noReportsOnDeviceContainer,
-                ]}>
+                ]}
+              >
                 <Text
                   style={[
                     styles.reportsNumber,
                     numberOfReports
                       ? styles.reportsOnDevice
                       : styles.noReportsOnDevice,
-                  ]}>{`${numberOfReports}`}</Text>
+                  ]}
+                >{`${numberOfReports}`}</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.opacity}
-              onPress={onToggleThemePressed}>
+              onPress={onToggleThemePressed}
+            >
               <Icon
-                name={theme === DARK ? 'sun' : 'moon'}
+                name={theme === DARK ? "sun" : "moon"}
                 style={[styles.opacityText, styles.opacityIcon]}
               />
               <Text style={[styles.opacityText]}>{`${
-                theme === DARK ? 'Light' : 'Dark'
+                theme === DARK ? "Light" : "Dark"
               } theme`}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.opacity} onPress={onSignOutPressed}>
@@ -367,7 +375,7 @@ const HomeScreen = () => {
           <ActivityIndicator
             style={globalStyles.activityIndicator}
             color={colors.primary}
-            size={'large'}
+            size={"large"}
           />
         ) : null}
       </View>

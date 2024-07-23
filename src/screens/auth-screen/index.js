@@ -2,7 +2,7 @@
  * AuthScreen Component
  */
 
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -10,45 +10,45 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useSelector, useDispatch} from 'react-redux';
-import NetInfo from '@react-native-community/netinfo';
-import {ErrorBoundary} from 'react-error-boundary';
+  KeyboardAvoidingView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import NetInfo from "@react-native-community/netinfo";
+import { ErrorBoundary } from "react-error-boundary";
 
-import {LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {selectTheme} from '../../redux/selectors';
-import {signIn} from '../../redux/actions';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+import { LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { selectTheme } from "../../redux/selectors";
+import { signIn } from "../../redux/actions";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
 const AuthScreen = () => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
 
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onSignInPressed = async () => {
     if (!email || !password) {
-      Alert.alert('Please enter both an email and password', '', [
+      Alert.alert("Please enter both an email and password", "", [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
       return;
     }
 
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -59,25 +59,25 @@ const AuthScreen = () => {
     try {
       await dispatch(signIn(email, password));
     } catch (error) {
-      let message = '';
+      let message = "";
       switch (error.message) {
-        case 'auth/invalid-email':
-          message = 'The email address you entered is invalid.';
+        case "auth/invalid-email":
+          message = "The email address you entered is invalid.";
           break;
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-          message = 'Incorrect email or password.';
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          message = "Incorrect email or password.";
           break;
         default:
-          message = 'Unknown error.';
+          message = "Unknown error.";
       }
-      Alert.alert('Error', message, [
+      Alert.alert("Error", message, [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
       setLoading(false);
-      setPassword('');
+      setPassword("");
     }
   };
 
@@ -86,25 +86,22 @@ const AuthScreen = () => {
 
   const onReset = () => {
     setLoading(false);
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[loading, email, password]}>
+      resetKeys={[loading, email, password]}
+    >
       <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={"dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={globalStyles.container}
-        scrollEnabled={false}>
+      <KeyboardAvoidingView style={globalStyles.container}>
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>
@@ -138,12 +135,12 @@ const AuthScreen = () => {
           </View>
         </View>
         <View style={globalStyles.flex} />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
       {loading ? (
         <ActivityIndicator
           style={globalStyles.activityIndicator}
           color={colors.primary}
-          size={'large'}
+          size={"large"}
         />
       ) : null}
     </ErrorBoundary>

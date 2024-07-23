@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -8,7 +8,7 @@ export default (colors) =>
       backgroundColor: colors.background.two,
     },
     picker: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       color: colors.text.main,
     },
   });

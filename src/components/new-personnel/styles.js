@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -9,11 +9,11 @@ export default (colors) =>
       margin: 8,
     },
     header: {
-      alignItems: 'center',
+      alignItems: "center",
       margin: 4,
     },
     headerContent: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 14,
       color: colors.text.main,
       letterSpacing: 0.5,

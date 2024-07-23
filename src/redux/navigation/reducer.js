@@ -8,16 +8,16 @@ import {
   TO_HOME_STACK,
   TO_INCIDENT_STACK,
   TO_END_STACK,
-} from '../types';
-import {AUTH_STACK} from '../../utils/navigation-stacks';
+} from "../types";
+import { AUTH_STACK } from "../../utils/navigation-stacks";
 
 const initialState = {
   currentStack: AUTH_STACK,
 };
 
 const setStack = (state, action) => {
-  const {payload} = action;
-  const {stack} = payload;
+  const { payload } = action;
+  const { stack } = payload;
   return {
     ...state,
     currentStack: stack,

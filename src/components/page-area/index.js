@@ -4,17 +4,17 @@
  * Handles group options and the tab view that holds each page component
  */
 
-import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {Text, View} from 'react-native';
-import {TabView, TabBar} from 'react-native-tab-view';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Text, View } from "react-native";
+import { TabView, TabBar } from "react-native-tab-view";
 
-import {selectTheme, selectAlertedGroups} from '../../redux/selectors';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
-import GroupOptions from '../group-options';
-import Page from '../page';
-import {pageLocations} from '../../utils/locations';
+import { selectTheme, selectAlertedGroups } from "../../redux/selectors";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
+import GroupOptions from "../group-options";
+import Page from "../page";
+import { pageLocations } from "../../utils/locations";
 
 const PageArea = () => {
   const theme = useSelector((state) => selectTheme(state));
@@ -32,7 +32,7 @@ const PageArea = () => {
   const colors = themeSelector(theme);
   const styles = createStyleSheet(colors);
 
-  const renderScene = ({route}) => <Page route={route} />;
+  const renderScene = ({ route }) => <Page route={route} />;
 
   useEffect(() => {
     setAlertedPages([]);
@@ -55,13 +55,14 @@ const PageArea = () => {
       {...props}
       indicatorStyle={styles.indicator}
       style={styles.tabBar}
-      renderLabel={({route}) => (
+      renderLabel={({ route }) => (
         <Text
           style={
             alertedPages.includes(route.key)
               ? styles.tabAlertLabel
               : styles.tabLabel
-          }>
+          }
+        >
           {route.title}
         </Text>
       )}

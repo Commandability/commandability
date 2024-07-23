@@ -10,10 +10,10 @@ import {
   MOVE_PERSON,
   TOGGLE_GROUP,
   RESET_INCIDENT,
-} from '../types';
-import {staticLocations} from '../../utils/locations';
+} from "../types";
+import { staticLocations } from "../../utils/locations";
 
-const {ROSTER, STAGING} = staticLocations;
+const { ROSTER, STAGING } = staticLocations;
 
 const initialState = {
   byId: {},
@@ -37,10 +37,10 @@ const byId = (state = initialState.byId, action) => {
 };
 
 const addPerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     person,
-    person: {personId},
+    person: { personId },
   } = payload;
   return {
     ...state,
@@ -51,21 +51,21 @@ const addPerson = (state, action) => {
 };
 
 const removePerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
+    person: { personId },
   } = payload;
 
-  const {[personId]: removed, ...updatedPersonnel} = state;
+  const { [personId]: removed, ...updatedPersonnel } = state;
   return updatedPersonnel;
 };
 
 // Set locationId of person by personId
 const movePerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
-    nextLocationData: {locationId},
+    person: { personId },
+    nextLocationData: { locationId },
     currTime,
   } = payload;
   const person = state[personId];
@@ -80,8 +80,8 @@ const movePerson = (state, action) => {
 };
 
 const configurePersonnel = (action) => {
-  const {payload} = action;
-  const {personnel} = payload;
+  const { payload } = action;
+  const { personnel } = payload;
 
   const personnelObjects = {};
   personnel.forEach((person) => {
@@ -106,25 +106,25 @@ const allIds = (state = initialState.allIds, action) => {
 };
 
 const addPersonId = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
+    person: { personId },
   } = payload;
   return state.concat(personId);
 };
 
 const removePersonId = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
+    person: { personId },
   } = payload;
 
   return state.filter((currId) => currId !== personId);
 };
 
 const configurePersonnelIds = (action) => {
-  const {payload} = action;
-  const {personnel} = payload;
+  const { payload } = action;
+  const { personnel } = payload;
 
   return personnel.map((person) => person.personId);
 };
@@ -134,7 +134,7 @@ const returnToStaging = (state, action) => {
   const {
     payload: {
       currTime,
-      group: {locationId},
+      group: { locationId },
     },
   } = action;
   const _ById = {};
@@ -165,7 +165,7 @@ const resetIncident = (state) => {
   const _AllIds = [];
   state.allIds.forEach((personId) => {
     const person = state.byId[personId];
-    const {isTemporary} = person;
+    const { isTemporary } = person;
     // Only add a person to the reset state if they weren't added during the incident
     if (!isTemporary) {
       _ById[personId] = {

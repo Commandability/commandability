@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -13,17 +13,17 @@ export default (colors) =>
     },
     line: {
       flex: 1,
-      flexDirection: 'row',
+      flexDirection: "row",
     },
     name: {
       flex: 1,
-      textAlign: 'left',
-      fontFamily: 'ClearSans-Regular',
+      textAlign: "left",
+      fontFamily: "ClearSans-Regular",
       color: colors.text.main,
     },
     label: {
-      textAlign: 'left',
-      fontFamily: 'ClearSans-Regular',
+      textAlign: "left",
+      fontFamily: "ClearSans-Regular",
       fontSize: 14,
       color: colors.text.disabled,
     },

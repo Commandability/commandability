@@ -5,51 +5,51 @@
  * It also contains the logic for the RESET_APP action
  */
 
-import {combineReducers} from 'redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {persistReducer, purgeStoredState} from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import { combineReducers } from "redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { persistReducer, purgeStoredState } from "redux-persist";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
-import groups from './groups/reducer';
-import navigation from './navigation/reducer';
-import personnel from './personnel/reducer';
-import report from './report/reducer';
-import selected from './selected/reducer';
-import theme from './theme/reducer';
-import timer from './timer/reducer';
-import {RESET_APP} from './types';
+import groups from "./groups/reducer";
+import navigation from "./navigation/reducer";
+import personnel from "./personnel/reducer";
+import report from "./report/reducer";
+import selected from "./selected/reducer";
+import theme from "./theme/reducer";
+import timer from "./timer/reducer";
+import { RESET_APP } from "./types";
 
 const groupsPersistConfig = {
-  key: 'groups',
+  key: "groups",
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
 };
 
 const navigationPersistConfig = {
-  key: 'navigation',
+  key: "navigation",
   storage: AsyncStorage,
 };
 
 // Personnel reducer config, set persisted data to autoMergeLevel2 to track personnel changes
 // https://blog.reactnativecoach.com/the-definitive-guide-to-redux-persist-84738167975
 const personnelPersistConfig = {
-  key: 'personnel',
+  key: "personnel",
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
 };
 
 const reportPersistConfig = {
-  key: 'report',
+  key: "report",
   storage: AsyncStorage,
 };
 
 const themePersistConfig = {
-  key: 'theme',
+  key: "theme",
   storage: AsyncStorage,
 };
 
 const timePersistConfig = {
-  key: 'timer',
+  key: "timer",
   storage: AsyncStorage,
 };
 
@@ -65,7 +65,7 @@ const appReducer = combineReducers({
 
 // Root reducer config, persisted data defaults to autoMergeLevel1
 const rootPersistConfig = {
-  key: 'root',
+  key: "root",
   storage: AsyncStorage,
 };
 

@@ -1,14 +1,14 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default () =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      justifyContent: "space-between",
       marginHorizontal: 16,
     },
     options: {
-      flexDirection: 'row',
+      flexDirection: "row",
     },
     bottomButton: {
       marginBottom: 16,

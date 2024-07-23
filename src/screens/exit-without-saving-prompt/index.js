@@ -2,7 +2,7 @@
  * ExitWithoutSavingPrompt component
  */
 
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -10,47 +10,47 @@ import {
   View,
   TextInput,
   Text,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import auth from '@react-native-firebase/auth';
-import NetInfo from '@react-native-community/netinfo';
-import {ErrorBoundary} from 'react-error-boundary';
+  KeyboardAvoidingView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import auth from "@react-native-firebase/auth";
+import NetInfo from "@react-native-community/netinfo";
+import { ErrorBoundary } from "react-error-boundary";
 
-import {BackButton, LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {resetIncident, toHomeStack} from '../../redux/actions';
-import {selectTheme} from '../../redux/selectors';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+import { BackButton, LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { resetIncident, toHomeStack } from "../../redux/actions";
+import { selectTheme } from "../../redux/selectors";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
 const ExitWithoutSavingPrompt = () => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
-  const {currentUser} = auth();
+  const { currentUser } = auth();
 
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
 
   const onExitPressed = async () => {
     if (!password) {
-      Alert.alert("Please enter your organization's password", '', [
+      Alert.alert("Please enter your organization's password", "", [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
       return;
     }
 
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -67,21 +67,21 @@ const ExitWithoutSavingPrompt = () => {
       dispatch(resetIncident()); // Reset personnel locations and group settings, remove all temporary personnel from state
       dispatch(toHomeStack());
     } catch (error) {
-      let message = '';
+      let message = "";
       // Error.code provided by firebase
-      if (error.code === 'auth/wrong-password') {
-        message = 'Incorrect password.';
+      if (error.code === "auth/wrong-password") {
+        message = "Incorrect password.";
       } else {
-        message = 'Unknown error.';
+        message = "Unknown error.";
       }
-      Alert.alert('Error', message, [
+      Alert.alert("Error", message, [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
     }
     setLoading(false);
-    setPassword('');
+    setPassword("");
   };
 
   const colors = themeSelector(theme);
@@ -89,25 +89,22 @@ const ExitWithoutSavingPrompt = () => {
 
   const onReset = () => {
     setLoading(false);
-    setPassword('');
+    setPassword("");
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[loading, password]}>
+      resetKeys={[loading, password]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <BackButton />
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={globalStyles.container}
-        scrollEnabled={false}>
+      <KeyboardAvoidingView style={globalStyles.container}>
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>
@@ -136,12 +133,12 @@ const ExitWithoutSavingPrompt = () => {
           </View>
         </View>
         <View style={globalStyles.flex} />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
       {loading ? (
         <ActivityIndicator
           style={globalStyles.activityIndicator}
           color={colors.primary}
-          size={'large'}
+          size={"large"}
         />
       ) : null}
     </ErrorBoundary>

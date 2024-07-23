@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -10,7 +10,7 @@ export default (colors) =>
     },
     queryInput: {
       height: 40,
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       color: colors.text.main,
       borderColor: colors.primary,
       borderBottomWidth: 1,
@@ -18,11 +18,11 @@ export default (colors) =>
       marginBottom: 8,
     },
     header: {
-      alignItems: 'center',
+      alignItems: "center",
       margin: 4,
     },
     headerContent: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 14,
       color: colors.text.main,
       letterSpacing: 0.5,

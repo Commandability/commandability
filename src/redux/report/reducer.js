@@ -14,25 +14,25 @@ import {
   EDIT_GROUP,
   TOGGLE_GROUP,
   ALERT_PERSON_TO_GROUP,
-} from '../types';
-import {staticLocations} from '../../utils/locations';
+} from "../types";
+import { staticLocations } from "../../utils/locations";
 
-const {ROSTER, NEW_PERSONNEL, STAGING} = staticLocations;
+const { ROSTER, NEW_PERSONNEL, STAGING } = staticLocations;
 
 const logStartIncident = (action) => {
-  const {payload} = action;
-  const {entryId, dateTime} = payload;
+  const { payload } = action;
+  const { entryId, dateTime } = payload;
   return {
     [entryId]: {
       dateTime,
-      log: 'Incident started',
+      log: "Incident started",
     },
   };
 };
 
 const logEndIncident = (state, action) => {
-  const {payload} = action;
-  const {entryId, dateTime} = payload;
+  const { payload } = action;
+  const { entryId, dateTime } = payload;
   // Only log end incident if there is not an end incident entry
   return state[entryId]
     ? state
@@ -40,23 +40,23 @@ const logEndIncident = (state, action) => {
         ...state,
         [entryId]: {
           dateTime,
-          log: 'Incident ended',
+          log: "Incident ended",
         },
       };
 };
 
 const resumeIncident = (state) => {
-  const {[END_INCIDENT]: removed, ...updatedReport} = state;
+  const { [END_INCIDENT]: removed, ...updatedReport } = state;
   return updatedReport;
 };
 
 // For temporary personnel
 const logRemovePerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     entryId,
     dateTime,
-    person: {locationId, firstName, lastName, badge, organization},
+    person: { locationId, firstName, lastName, badge, organization },
   } = payload;
 
   // Only log if removed from staging
@@ -65,8 +65,8 @@ const logRemovePerson = (state, action) => {
         ...state,
         [entryId]: {
           dateTime,
-          log: `${badge ? badge + ' - ' : ''}${firstName} ${lastName}${
-            organization ? ` (${organization}) ` : ' '
+          log: `${badge ? badge + " - " : ""}${firstName} ${lastName}${
+            organization ? ` (${organization}) ` : " "
           }removed from incident`,
         },
       }
@@ -75,22 +75,22 @@ const logRemovePerson = (state, action) => {
 
 // For incident personnel
 const logMovePerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     entryId,
     dateTime,
-    person: {firstName, lastName, badge, organization},
-    prevLocationData: {name: prevName, locationId: prevLocationId},
-    nextLocationData: {name: nextName, locationId: nextLocationId},
+    person: { firstName, lastName, badge, organization },
+    prevLocationData: { name: prevName, locationId: prevLocationId },
+    nextLocationData: { name: nextName, locationId: nextLocationId },
   } = payload;
 
-  let log = '';
+  let log = "";
   if (
     prevLocationId === NEW_PERSONNEL.locationId &&
     nextLocationId === STAGING.locationId
   ) {
-    log = `${badge ? badge + ' - ' : ''}${firstName} ${lastName}${
-      organization ? ` (${organization}) ` : ' '
+    log = `${badge ? badge + " - " : ""}${firstName} ${lastName}${
+      organization ? ` (${organization}) ` : " "
     } added to incident`;
   } else if (
     prevLocationId === STAGING.locationId &&
@@ -98,7 +98,7 @@ const logMovePerson = (state, action) => {
   ) {
     // Does not include organization because added personnel are removed via removePerson, not movePerson
     log = `${
-      badge ? badge + ' - ' : ''
+      badge ? badge + " - " : ""
     }${firstName} ${lastName} removed from incident`;
   } else {
     // Don't log people moving back to ROSTER from NEW_PERSONNEL or moving from ROSTER to NEW_PERSONNEL
@@ -108,8 +108,8 @@ const logMovePerson = (state, action) => {
       prevLocationId !== ROSTER.locationId &&
       nextLocationId !== NEW_PERSONNEL.locationId
     ) {
-      log = `${badge ? badge + ' - ' : ''}${firstName} ${lastName}${
-        organization ? ` (${organization}) ` : ' '
+      log = `${badge ? badge + " - " : ""}${firstName} ${lastName}${
+        organization ? ` (${organization}) ` : " "
       }moved from ${prevName} to ${nextName}`;
     }
   }
@@ -124,10 +124,10 @@ const logMovePerson = (state, action) => {
 };
 
 const logEditGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    group: {name},
-    settings: {name: newName, alert: newAlert},
+    group: { name },
+    settings: { name: newName, alert: newAlert },
     entryId,
     dateTime,
   } = payload;
@@ -136,14 +136,14 @@ const logEditGroup = (state, action) => {
     ? newAlert || newAlert === 0
       ? `name: ${newName}, `
       : `name: ${newName}`
-    : '';
+    : "";
 
   const editAlertLog =
     newAlert || newAlert === 0
       ? newAlert === 0
-        ? 'alert: disabled'
+        ? "alert: disabled"
         : `alert: ${newAlert}`
-      : '';
+      : "";
 
   return {
     ...state,
@@ -155,9 +155,9 @@ const logEditGroup = (state, action) => {
 };
 
 const logToggleGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    group: {name, isVisible},
+    group: { name, isVisible },
     entryId,
     dateTime,
   } = payload;
@@ -172,10 +172,10 @@ const logToggleGroup = (state, action) => {
 };
 
 const logAlertPersonToGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {firstName, lastName, badge, organization},
-    group: {alert},
+    person: { firstName, lastName, badge, organization },
+    group: { alert },
     entryId,
     dateTime,
   } = payload;
@@ -185,8 +185,8 @@ const logAlertPersonToGroup = (state, action) => {
       dateTime,
       // If isVisible is currently true, it is being toggled to false
       log: `Alert at ${alert} minutes for ${
-        badge ? badge + ' - ' : ''
-      }${firstName} ${lastName}${organization ? ` (${organization}) ` : ''}`,
+        badge ? badge + " - " : ""
+      }${firstName} ${lastName}${organization ? ` (${organization}) ` : ""}`,
     },
   };
 };

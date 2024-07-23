@@ -5,13 +5,14 @@
  * Based on https://reactnavigation.org/docs/auth-flow except using redux instead of the Context API
  */
 
-import React, {useEffect, useState} from 'react';
-import {Alert, View, StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import RNBootSplash from 'react-native-bootsplash';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import { Alert, View, StyleSheet } from "react-native";
+import { useFonts } from "expo-font";
+import { useSelector } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as SplashScreen from "expo-splash-screen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   HomeScreen,
@@ -23,17 +24,20 @@ import {
   AddPersonnelPrompt,
   SavePrompt,
   AddPersonPrompt,
-} from './screens';
+} from "./screens";
 import {
   AUTH_STACK,
   HOME_STACK,
   INCIDENT_STACK,
   END_STACK,
-} from './utils/navigation-stacks';
-import {selectStack, selectTheme} from './redux/selectors';
-import themeSelector from './utils/themes';
+} from "./utils/navigation-stacks";
+import { selectStack, selectTheme } from "./redux/selectors";
+import themeSelector from "./utils/themes";
 
-const PERSISTENCE_KEY = 'NAVIGATION_STATE';
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
+const PERSISTENCE_KEY = "NAVIGATION_STATE";
 
 const Auth = createStackNavigator();
 const Home = createStackNavigator();
@@ -100,6 +104,10 @@ const SwitchNavigator = () => {
   const [isReady, setIsReady] = useState(false);
   const [initialState, setInitialState] = useState();
 
+  const [loaded, error] = useFonts({
+    "ClearSans-Regular": require("../assets/fonts/ClearSans-Regular.ttf"),
+  });
+
   // https://reactnavigation.org/docs/state-persistence/
   useEffect(() => {
     const init = async () => {
@@ -113,18 +121,20 @@ const SwitchNavigator = () => {
           setInitialState(savedState);
         }
       } catch (error) {
-        Alert.alert('Error', error, [
+        Alert.alert("Error", error.message, [
           {
-            text: 'OK',
+            text: "OK",
           },
         ]);
       }
     };
-    init().finally(async () => {
-      await RNBootSplash.hide({fade: true});
-      setIsReady(true);
-    });
-  }, []);
+    if (loaded || error) {
+      init().finally(async () => {
+        SplashScreen.hideAsync();
+        setIsReady(true);
+      });
+    }
+  }, [loaded, error]);
 
   const colors = themeSelector(theme);
   const styles = createStyleSheet(colors);
@@ -139,7 +149,8 @@ const SwitchNavigator = () => {
         initialState={initialState}
         onStateChange={(state) =>
           AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-        }>
+        }
+      >
         {setStack(stack)}
       </NavigationContainer>
     </View>

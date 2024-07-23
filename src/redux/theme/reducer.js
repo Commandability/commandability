@@ -2,8 +2,8 @@
  * Theme Reducer
  */
 
-import {TOGGLE_THEME} from '../types';
-import {DARK, LIGHT} from '../../utils/themes';
+import { TOGGLE_THEME } from "../types";
+import { DARK, LIGHT } from "../../utils/themes";
 
 const initialState = {
   currentTheme: LIGHT,

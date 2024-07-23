@@ -4,28 +4,28 @@
  * Attempt recovery in case of js errors that are not asynchronous, allow emergency report upload
  */
 
-import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Alert, StatusBar, View, Text} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import auth from '@react-native-firebase/auth';
-import NetInfo from '@react-native-community/netinfo';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import { ActivityIndicator, Alert, StatusBar, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import auth from "@react-native-firebase/auth";
+import NetInfo from "@react-native-community/netinfo";
+import PropTypes from "prop-types";
 
-import {LargeButton} from '../../components';
-import {resetIncident} from '../../redux/actions';
-import {selectTheme, selectReportData} from '../../redux/selectors';
+import { LargeButton } from "../../components";
+import { resetIncident } from "../../redux/actions";
+import { selectTheme, selectReportData } from "../../redux/selectors";
 import {
   getNumberOfReports,
   uploadReport,
   uploadReports,
   deleteAllReports,
-} from '../../utils/report-manager';
-import {START_INCIDENT} from '../../redux/types';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+} from "../../utils/report-manager";
+import { START_INCIDENT } from "../../redux/types";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
-const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
+const ErrorFallbackScreen = ({ error, resetErrorBoundary }) => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
   const reportData = useSelector((state) => selectReportData(state));
@@ -35,7 +35,7 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
 
   const reportIsUnsaved = reportData[START_INCIDENT];
 
-  const {currentUser} = auth();
+  const { currentUser } = auth();
 
   useEffect(() => {
     const getNumberOfReportsEffect = async () => {
@@ -49,14 +49,14 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
   const globalStyles = createGlobalStyleSheet(colors);
 
   const onEmergencyUploadPressed = async () => {
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -65,11 +65,11 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
 
     if (!reportIsUnsaved && !numberOfReports) {
       Alert.alert(
-        'Emergency upload completed successfully',
-        'No saved or active reports found on device.',
+        "Emergency upload completed successfully",
+        "No saved or active reports found on device.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -81,7 +81,7 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
     try {
       await uploadReports();
       if (reportIsUnsaved) {
-        reportData.EMERGENCY_UPLOAD = 'Emergency upload: report incomplete';
+        reportData.EMERGENCY_UPLOAD = "Emergency upload: report incomplete";
         await uploadReport(reportData);
         dispatch(resetIncident());
       }
@@ -89,29 +89,29 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
       await deleteAllReports();
 
       Alert.alert(
-        'Emergency upload completed successfully',
-        'All saved and active reports have been uploaded and removed from the device.',
+        "Emergency upload completed successfully",
+        "All saved and active reports have been uploaded and removed from the device.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
     } catch (_error) {
       if (uploadSuccess) {
         Alert.alert(
-          'Error removing reports from device',
-          'All reports were successfully uploaded, but were not successfully removed from the device. Clear app storage manually before next use.',
+          "Error removing reports from device",
+          "All reports were successfully uploaded, but were not successfully removed from the device. Clear app storage manually before next use.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
       } else {
-        Alert.alert('Emergency upload failed', _error, [
+        Alert.alert("Emergency upload failed", _error.message, [
           {
-            text: 'OK',
+            text: "OK",
           },
         ]);
       }
@@ -122,8 +122,8 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
   return (
     <>
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <View style={globalStyles.content}>
@@ -147,7 +147,7 @@ const ErrorFallbackScreen = ({error, resetErrorBoundary}) => {
           <ActivityIndicator
             style={globalStyles.activityIndicator}
             color={colors.primary}
-            size={'large'}
+            size={"large"}
           />
         ) : null}
       </View>

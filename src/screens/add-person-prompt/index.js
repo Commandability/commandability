@@ -4,38 +4,44 @@
  * Add temporary personnel to the incident
  */
 
-import React, {useState} from 'react';
-import {Alert, StatusBar, View, TextInput, Text} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import PropTypes from 'prop-types';
-import {ErrorBoundary} from 'react-error-boundary';
+import React, { useState } from "react";
+import {
+  Alert,
+  StatusBar,
+  View,
+  TextInput,
+  Text,
+  KeyboardAvoidingView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import { ErrorBoundary } from "react-error-boundary";
 
-import {BackButton, LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {addPerson} from '../../redux/actions';
-import {selectTheme} from '../../redux/selectors';
-import {staticLocations} from '../../utils/locations';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+import { BackButton, LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { addPerson } from "../../redux/actions";
+import { selectTheme } from "../../redux/selectors";
+import { staticLocations } from "../../utils/locations";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
-const {NEW_PERSONNEL} = staticLocations;
+const { NEW_PERSONNEL } = staticLocations;
 
-const AddPersonPrompt = ({navigation}) => {
+const AddPersonPrompt = ({ navigation }) => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [badge, setBadge] = useState('');
-  const [organization, setOrganization] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [badge, setBadge] = useState("");
+  const [organization, setOrganization] = useState("");
 
   const onAddPersonPressed = () => {
     if (!firstName || !lastName) {
-      Alert.alert('Please enter both a first and last name', '', [
+      Alert.alert("Please enter both a first and last name", "", [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
       return;
@@ -43,41 +49,38 @@ const AddPersonPrompt = ({navigation}) => {
 
     dispatch(
       addPerson(
-        {firstName, lastName, badge, organization},
+        { firstName, lastName, badge, organization },
         NEW_PERSONNEL.locationId,
       ),
     );
 
-    const {navigate} = navigation;
-    navigate('AddPersonnelPrompt');
+    const { navigate } = navigation;
+    navigate("AddPersonnelPrompt");
   };
 
   const colors = themeSelector(theme);
   const globalStyles = createGlobalStyleSheet(colors);
 
   const onReset = () => {
-    setFirstName('');
-    setLastName('');
-    setBadge('');
-    setOrganization('');
+    setFirstName("");
+    setLastName("");
+    setBadge("");
+    setOrganization("");
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[firstName, lastName, badge, organization]}>
+      resetKeys={[firstName, lastName, badge, organization]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <BackButton />
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={globalStyles.container}
-        scrollEnabled={false}>
+      <KeyboardAvoidingView style={globalStyles.container}>
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>
@@ -102,7 +105,7 @@ const AddPersonPrompt = ({navigation}) => {
             <Text style={globalStyles.label}>Badge Number</Text>
             <TextInput
               style={globalStyles.input}
-              keyboardType={'numeric'}
+              keyboardType={"numeric"}
               onChangeText={(_badge) => setBadge(_badge)}
               value={badge}
               maxLength={15}
@@ -126,7 +129,7 @@ const AddPersonPrompt = ({navigation}) => {
           </View>
         </View>
         <View style={globalStyles.flex} />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 };

@@ -1,17 +1,17 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
     opacity: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
       borderRadius: 8,
       paddingVertical: 4,
       marginVertical: 16,
     },
     opacityText: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 24,
     },
     opacityIcon: {

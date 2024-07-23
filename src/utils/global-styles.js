@@ -2,20 +2,20 @@
  * Global styles
  */
 
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
     activityIndicator: {
-      position: 'absolute',
+      position: "absolute",
       left: 0,
       right: 0,
       bottom: 24,
     },
     container: {
-      flexDirection: 'row',
+      flexDirection: "row",
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: "center",
       backgroundColor: colors.background.one,
     },
     flex: {
@@ -23,15 +23,15 @@ export default (colors) =>
     },
     content: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: "center",
     },
     label: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       color: colors.primary,
     },
     input: {
       height: 48,
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       color: colors.text.main,
       backgroundColor: colors.background.two,
       borderRadius: 8,
@@ -43,13 +43,13 @@ export default (colors) =>
       marginVertical: 16,
     },
     promptHeader: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 32,
       marginBottom: 8,
       color: colors.primary,
     },
     promptText: {
-      fontFamily: 'ClearSans-Regular',
+      fontFamily: "ClearSans-Regular",
       fontSize: 24,
       marginBottom: 8,
       color: colors.text.main,

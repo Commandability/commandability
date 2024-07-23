@@ -4,37 +4,43 @@
  * Add location and description to report
  */
 
-import React, {useState} from 'react';
-import {Alert, StatusBar, View, Text, TextInput} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {ErrorBoundary} from 'react-error-boundary';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import {
+  Alert,
+  StatusBar,
+  View,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { ErrorBoundary } from "react-error-boundary";
+import PropTypes from "prop-types";
 
-import {LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {selectReportData, selectTheme} from '../../redux/selectors';
-import {resumeIncident, toIncidentStack} from '../../redux/actions';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+import { LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { selectReportData, selectTheme } from "../../redux/selectors";
+import { resumeIncident, toIncidentStack } from "../../redux/actions";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
-const EndScreen = ({navigation}) => {
+const EndScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
   const reportData = useSelector((state) => selectReportData(state));
 
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
 
   const onResumeIncidentPressed = () => {
-    Alert.alert('Are you sure you want to resume the incident?', '', [
+    Alert.alert("Are you sure you want to resume the incident?", "", [
       {
-        text: 'Cancel',
+        text: "Cancel",
         onPress: () => {},
       },
       {
-        text: 'OK',
+        text: "OK",
         onPress: () => {
           dispatch(resumeIncident());
           dispatch(toIncidentStack());
@@ -45,9 +51,9 @@ const EndScreen = ({navigation}) => {
 
   const onContinuePressed = () => {
     if (!location) {
-      Alert.alert('Location is required', '', [
+      Alert.alert("Location is required", "", [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
       return;
@@ -58,33 +64,30 @@ const EndScreen = ({navigation}) => {
       reportData.DESCRIPTION = description;
     }
 
-    const {navigate} = navigation;
-    navigate('SavePrompt', {reportData});
+    const { navigate } = navigation;
+    navigate("SavePrompt", { reportData });
   };
 
   const colors = themeSelector(theme);
   const globalStyles = createGlobalStyleSheet(colors);
 
   const onReset = () => {
-    setLocation('');
-    setDescription('');
+    setLocation("");
+    setDescription("");
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[location, description]}>
+      resetKeys={[location, description]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={globalStyles.container}
-        scrollEnabled={false}>
+      <KeyboardAvoidingView style={globalStyles.container}>
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>
@@ -121,7 +124,7 @@ const EndScreen = ({navigation}) => {
           </View>
         </View>
         <View style={globalStyles.flex} />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 };

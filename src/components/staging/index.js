@@ -4,27 +4,27 @@
  * Displays the staging list and handles its selection
  */
 
-import React from 'react';
-import {TouchableOpacity, Text, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React from "react";
+import { TouchableOpacity, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import StagingList from '../staging-list';
+import StagingList from "../staging-list";
 import {
   selectGroupByLocationId,
   selectSelectedLocationId,
   selectSelectedPersonnel,
   selectTheme,
-} from '../../redux/selectors';
+} from "../../redux/selectors";
 import {
   clearSelectedPersonnel,
   movePerson,
   dealertPersonToGroup,
-} from '../../redux/actions';
-import {staticLocations} from '../../utils/locations';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
+} from "../../redux/actions";
+import { staticLocations } from "../../utils/locations";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
 
-const {STAGING} = staticLocations;
+const { STAGING } = staticLocations;
 
 const Staging = () => {
   const dispatch = useDispatch();
@@ -42,10 +42,10 @@ const Staging = () => {
   const onStagingPressed = () => {
     // set each selected personId's new locationId to STAGING
     selectedPersonnel.forEach((person) => {
-      const {personId} = person;
+      const { personId } = person;
 
       if (selectedGroup) {
-        const {alerted} = selectedGroup;
+        const { alerted } = selectedGroup;
         if (alerted.includes(personId)) {
           dispatch(dealertPersonToGroup(selectedGroup, person));
         }

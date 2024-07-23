@@ -5,20 +5,20 @@
  * the group when it is selected
  */
 
-import React, {useMemo} from 'react';
-import {FlatList, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useMemo } from "react";
+import { FlatList, View } from "react-native";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
 import {
   selectTheme,
   createSelectPersonnelByLocationId,
-} from '../../redux/selectors';
-import IncidentItem from '../incident-item';
-import themeSelector from '../../utils/themes';
-import createStyleSheet from './styles';
+} from "../../redux/selectors";
+import IncidentItem from "../incident-item";
+import themeSelector from "../../utils/themes";
+import createStyleSheet from "./styles";
 
-const GroupList = ({locationId}) => {
+const GroupList = ({ locationId }) => {
   const theme = useSelector((state) => selectTheme(state));
   const selectPersonnelByLocationId = useMemo(
     createSelectPersonnelByLocationId,
@@ -28,7 +28,7 @@ const GroupList = ({locationId}) => {
     selectPersonnelByLocationId(state, locationId),
   );
 
-  const renderItem = ({item: {personId}}) => (
+  const renderItem = ({ item: { personId } }) => (
     <IncidentItem personId={personId} />
   );
 

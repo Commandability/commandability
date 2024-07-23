@@ -4,15 +4,15 @@
  * Displays all personnel in the staging list
  */
 
-import React, {useMemo} from 'react';
-import {FlatList} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, { useMemo } from "react";
+import { FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
-import {createSelectPersonnelByLocationId} from '../../redux/selectors';
-import IncidentItem from '../incident-item';
-import {staticLocations} from '../../utils/locations';
+import { createSelectPersonnelByLocationId } from "../../redux/selectors";
+import IncidentItem from "../incident-item";
+import { staticLocations } from "../../utils/locations";
 
-const {STAGING} = staticLocations;
+const { STAGING } = staticLocations;
 
 const StagingList = () => {
   const selectPersonnelByLocationId = useMemo(
@@ -21,7 +21,7 @@ const StagingList = () => {
   );
   const personnel = useSelector((state) => selectPersonnelByLocationId(state));
 
-  const renderItem = ({item: {personId}}) => (
+  const renderItem = ({ item: { personId } }) => (
     <IncidentItem locationId={STAGING.locationId} personId={personId} />
   );
 

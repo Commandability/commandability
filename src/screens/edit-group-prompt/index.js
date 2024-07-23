@@ -2,32 +2,39 @@
  * EditGroupPrompt Component
  */
 
-import React, {useState} from 'react';
-import {Platform, Alert, StatusBar, Text, TextInput, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {ErrorBoundary} from 'react-error-boundary';
-import {Picker} from '@react-native-picker/picker';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import {
+  Platform,
+  Alert,
+  StatusBar,
+  Text,
+  TextInput,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { ErrorBoundary } from "react-error-boundary";
+import { Picker } from "@react-native-picker/picker";
+import PropTypes from "prop-types";
 
-import {BackButton, LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {selectTheme} from '../../redux/selectors';
-import {editGroup} from '../../redux/actions';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
-import createStyleSheet from './styles';
+import { BackButton, LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { selectTheme } from "../../redux/selectors";
+import { editGroup } from "../../redux/actions";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
+import createStyleSheet from "./styles";
 
 const alerts = [5, 10, 15, 20, 25, 30];
 
-const EditGroupPrompt = ({navigation, route}) => {
+const EditGroupPrompt = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => selectTheme(state));
 
   const {
     params: {
-      group: {name: currName, alert: currAlert},
+      group: { name: currName, alert: currAlert },
     },
   } = route;
 
@@ -36,9 +43,9 @@ const EditGroupPrompt = ({navigation, route}) => {
 
   const onSavePressed = () => {
     if (!newName) {
-      Alert.alert('Please enter a group name', '', [
+      Alert.alert("Please enter a group name", "", [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
 
@@ -46,19 +53,19 @@ const EditGroupPrompt = ({navigation, route}) => {
     }
 
     const {
-      params: {group},
+      params: { group },
     } = route;
 
     if (currName !== newName || currAlert !== newAlert) {
       dispatch(
         editGroup(group, {
-          ...(newName !== currName && {name: newName}),
-          ...(newAlert !== currAlert && {alert: newAlert}),
+          ...(newName !== currName && { name: newName }),
+          ...(newAlert !== currAlert && { alert: newAlert }),
         }),
       );
     }
 
-    const {goBack} = navigation;
+    const { goBack } = navigation;
     goBack();
   };
 
@@ -67,25 +74,22 @@ const EditGroupPrompt = ({navigation, route}) => {
   const globalStyles = createGlobalStyleSheet(colors);
 
   const onReset = () => {
-    setNewName('');
+    setNewName("");
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[newName]}>
+      resetKeys={[newName]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <BackButton />
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={globalStyles.container}
-        scrollEnabled={false}>
+      <KeyboardAvoidingView style={globalStyles.container}>
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>
@@ -103,17 +107,18 @@ const EditGroupPrompt = ({navigation, route}) => {
               <Picker
                 selectedValue={newAlert}
                 onValueChange={(_newAlert) => setNewAlert(_newAlert)}
-                style={styles.picker}>
+                style={styles.picker}
+              >
                 <Picker.Item
                   key={0}
                   label="Disabled"
                   value={0}
                   color={
-                    Platform.OS === 'ios'
+                    Platform.OS === "ios"
                       ? colors.text.main
                       : theme === DARK
-                      ? colors.text.alternate
-                      : colors.text.main
+                        ? colors.text.alternate
+                        : colors.text.main
                   }
                 />
                 {alerts.map((time) => (
@@ -122,11 +127,11 @@ const EditGroupPrompt = ({navigation, route}) => {
                     label={`${time} minutes`}
                     value={time}
                     color={
-                      Platform.OS === 'ios'
+                      Platform.OS === "ios"
                         ? colors.text.main
                         : theme === DARK
-                        ? colors.text.alternate
-                        : colors.text.main
+                          ? colors.text.alternate
+                          : colors.text.main
                     }
                   />
                 ))}
@@ -136,7 +141,7 @@ const EditGroupPrompt = ({navigation, route}) => {
           </View>
         </View>
         <View style={globalStyles.flex} />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 };

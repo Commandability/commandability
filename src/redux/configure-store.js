@@ -4,12 +4,12 @@
  * Handle all redux middleware and generate redux store with redux-persist
  */
 
-import {legacy_createStore as createStore, applyMiddleware} from 'redux';
+import { legacy_createStore as createStore, applyMiddleware } from "redux";
 // import {compose} from 'redux'; // Development only
-import thunk from 'redux-thunk';
-import {persistStore} from 'redux-persist';
+import { thunk } from "redux-thunk";
+import { persistStore } from "redux-persist";
 
-import persistedReducers from './reducers';
+import persistedReducers from "./reducers";
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // Development only
 
@@ -20,5 +20,5 @@ export default () => {
     // composeEnhancers(applyMiddleware(thunk)), // Development only
   );
   let persistor = persistStore(store);
-  return {store, persistor};
+  return { store, persistor };
 };

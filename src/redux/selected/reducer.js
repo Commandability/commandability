@@ -15,12 +15,12 @@ import {
   TOGGLE_GROUP_MODE,
   CLEAR_SELECTED_GROUP_MODE,
   RESET_INCIDENT,
-} from '../types';
+} from "../types";
 
 const initialState = {
   personnelIds: [],
-  locationId: '',
-  groupMode: '',
+  locationId: "",
+  groupMode: "",
 };
 
 const personnelIds = (state = initialState.personnelIds, action) => {
@@ -43,9 +43,9 @@ const personnelIds = (state = initialState.personnelIds, action) => {
 // Previously selected persons will be deselected
 const togglePerson = (state, action) => {
   const {
-    payload: {person},
+    payload: { person },
   } = action;
-  const {personId} = person;
+  const { personId } = person;
 
   if (state.includes(personId)) {
     return state.filter((currId) => currId !== personId);
@@ -55,9 +55,9 @@ const togglePerson = (state, action) => {
 };
 
 const selectPerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
+    person: { personId },
   } = payload;
 
   if (state.includes(personId)) {
@@ -68,9 +68,9 @@ const selectPerson = (state, action) => {
 };
 
 const deselectPerson = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId},
+    person: { personId },
   } = payload;
 
   return state.filter((currId) => currId !== personId);
@@ -98,9 +98,9 @@ const groupMode = (state = initialState.groupMode, action) => {
 };
 
 const selectLocationId = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
-    person: {personId, locationId: selectedLocationId},
+    person: { personId, locationId: selectedLocationId },
   } = payload;
 
   // Reset the selected locationId when the last selected person is deselected
@@ -118,22 +118,22 @@ const selectLocationId = (state, action) => {
     return {
       personnelIds: personnelIds(state.personnelIds, action),
       locationId: selectedLocationId,
-      groupMode: '',
+      groupMode: "",
     };
   }
 };
 
 // Reset selected location and groups when a groupMode is selected
 const toggleGroupMode = (state, action) => {
-  const {payload} = action;
-  const {groupMode: selectedGroupMode} = payload;
+  const { payload } = action;
+  const { groupMode: selectedGroupMode } = payload;
 
   return {
     personnelIds: initialState.personnelIds,
     locationId: initialState.locationId,
     groupMode:
       state.groupMode && state.groupMode === selectedGroupMode
-        ? ''
+        ? ""
         : selectedGroupMode,
   };
 };

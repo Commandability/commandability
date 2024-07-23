@@ -2,7 +2,7 @@
  * Selected selectors
  */
 
-import * as selected from './reducer';
+import * as selected from "./reducer";
 
 export const selectSelectedLocationId = (state) =>
   selected.selectSelectedLocationId(state.selected);

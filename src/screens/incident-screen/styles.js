@@ -1,4 +1,4 @@
-import {Platform, StatusBar, StyleSheet, Dimensions} from 'react-native';
+import { Platform, StatusBar, StyleSheet, Dimensions } from "react-native";
 
 export default (colors) =>
   StyleSheet.create({
@@ -8,8 +8,8 @@ export default (colors) =>
     },
     mainArea: {
       flex: 1,
-      flexDirection: 'row',
-      marginTop: Platform.OS === 'ios' ? 24 : StatusBar.currentHeight + 8,
+      flexDirection: "row",
+      marginTop: Platform.OS === "ios" ? 24 : StatusBar.currentHeight + 8,
       marginBottom: 8,
     },
 
@@ -31,9 +31,9 @@ export default (colors) =>
      */
 
     sideBar: {
-      width: Dimensions.get('window').width * 0.25 + 8, // x = 8
+      width: Dimensions.get("window").width * 0.25 + 8, // x = 8
     },
     pageArea: {
-      width: Dimensions.get('window').width * 0.75 - 8, // x = 8
+      width: Dimensions.get("window").width * 0.75 - 8, // x = 8
     },
   });

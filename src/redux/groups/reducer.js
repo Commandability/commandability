@@ -10,14 +10,14 @@ import {
   CONFIGURE_GROUPS,
   UPDATE_CONFIGURATION,
   RESET_INCIDENT,
-} from '../types';
-import {pageLocations} from '../../utils/locations';
+} from "../types";
+import { pageLocations } from "../../utils/locations";
 
 const editGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     group,
-    group: {locationId},
+    group: { locationId },
     settings,
   } = payload;
 
@@ -31,11 +31,11 @@ const editGroup = (state, action) => {
 };
 
 const alertPersonToGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     group,
-    group: {locationId, alerted},
-    person: {personId},
+    group: { locationId, alerted },
+    person: { personId },
   } = payload;
 
   if (alerted.includes(personId)) {
@@ -52,11 +52,11 @@ const alertPersonToGroup = (state, action) => {
 };
 
 const dealertPersonToGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     group,
-    group: {locationId},
-    person: {personId},
+    group: { locationId },
+    person: { personId },
   } = payload;
 
   return {
@@ -69,10 +69,10 @@ const dealertPersonToGroup = (state, action) => {
 };
 
 const toggleGroup = (state, action) => {
-  const {payload} = action;
+  const { payload } = action;
   const {
     group,
-    group: {locationId, isVisible},
+    group: { locationId, isVisible },
   } = payload;
   return {
     ...state,
@@ -86,8 +86,8 @@ const toggleGroup = (state, action) => {
 
 // Configure groups with app or loaded defaults
 const configureGroups = (action) => {
-  const {payload} = action;
-  const {groups: defaultGroups} = payload;
+  const { payload } = action;
+  const { groups: defaultGroups } = payload;
 
   const groups = {};
   Object.keys(pageLocations).forEach((page) => {
@@ -100,12 +100,12 @@ const configureGroups = (action) => {
 
       groups[locationId] = {
         locationId,
-        name: defaultName?.toUpperCase() ?? locationId.replace(/_/g, ' '), // Replace underscore with space
+        name: defaultName?.toUpperCase() ?? locationId.replace(/_/g, " "), // Replace underscore with space
         isVisible: defaultIsVisible ?? false,
         alert: defaultAlert ?? 0,
         alerted: [],
         defaultName:
-          defaultName?.toUpperCase() ?? locationId.replace(/_/g, ' '), // Replace underscore with space
+          defaultName?.toUpperCase() ?? locationId.replace(/_/g, " "), // Replace underscore with space
         defaultIsVisible: defaultIsVisible ?? false,
         defaultAlert: defaultAlert ?? 0,
       };

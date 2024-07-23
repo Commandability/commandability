@@ -2,32 +2,32 @@
  * SavePrompt component
  */
 
-import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Alert, StatusBar, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import NetInfo from '@react-native-community/netinfo';
-import {ErrorBoundary} from 'react-error-boundary';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import { ActivityIndicator, Alert, StatusBar, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import NetInfo from "@react-native-community/netinfo";
+import { ErrorBoundary } from "react-error-boundary";
+import PropTypes from "prop-types";
 
-import {BackButton, LargeButton} from '../../components';
-import ErrorFallbackScreen from '../error-fallback-screen';
-import {resetIncident, toHomeStack} from '../../redux/actions';
-import {selectTheme} from '../../redux/selectors';
+import { BackButton, LargeButton } from "../../components";
+import ErrorFallbackScreen from "../error-fallback-screen";
+import { resetIncident, toHomeStack } from "../../redux/actions";
+import { selectTheme } from "../../redux/selectors";
 import {
   DEVICE_REPORT_LIMIT,
   getNumberOfReports,
   uploadReport,
   saveReport,
-} from '../../utils/report-manager';
-import {DARK} from '../../utils/themes';
-import themeSelector from '../../utils/themes';
-import createGlobalStyleSheet from '../../utils/global-styles';
+} from "../../utils/report-manager";
+import { DARK } from "../../utils/themes";
+import themeSelector from "../../utils/themes";
+import createGlobalStyleSheet from "../../utils/global-styles";
 
-const SavePrompt = ({route, navigation}) => {
+const SavePrompt = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const {reportData} = route.params;
+  const { reportData } = route.params;
   const theme = useSelector((state) => selectTheme(state));
 
   const [loading, setLoading] = useState(false);
@@ -42,18 +42,18 @@ const SavePrompt = ({route, navigation}) => {
   }, []);
 
   const onExitPressed = () => {
-    const {navigate} = navigation;
-    navigate('ExitWithoutSavingPrompt');
+    const { navigate } = navigation;
+    navigate("ExitWithoutSavingPrompt");
   };
 
   const onSaveToDevicePressed = async () => {
     if (numberOfReports === DEVICE_REPORT_LIMIT) {
       Alert.alert(
-        'You have saved the maximum number of reports on device',
-        'Please save to cloud or exit without saving.',
+        "You have saved the maximum number of reports on device",
+        "Please save to cloud or exit without saving.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -65,12 +65,12 @@ const SavePrompt = ({route, navigation}) => {
       `Are you sure? Only ${DEVICE_REPORT_LIMIT} reports can be saved to the device.`,
       [
         {
-          text: 'Cancel',
+          text: "Cancel",
           onPress: () => {},
-          style: 'cancel',
+          style: "cancel",
         },
         {
-          text: 'OK',
+          text: "OK",
           onPress: async () => {
             setLoading(true);
             try {
@@ -80,9 +80,9 @@ const SavePrompt = ({route, navigation}) => {
               setLoading(false);
               dispatch(toHomeStack());
             } catch (error) {
-              Alert.alert('Error', error, [
+              Alert.alert("Error", error.message, [
                 {
-                  text: 'OK',
+                  text: "OK",
                 },
               ]);
             }
@@ -93,14 +93,14 @@ const SavePrompt = ({route, navigation}) => {
   };
 
   const onSaveToCloudPressed = async () => {
-    const {isConnected} = await NetInfo.fetch();
+    const { isConnected } = await NetInfo.fetch();
     if (!isConnected) {
       Alert.alert(
-        'Failed to connect to the network',
-        'Please check your network connection status.',
+        "Failed to connect to the network",
+        "Please check your network connection status.",
         [
           {
-            text: 'OK',
+            text: "OK",
           },
         ],
       );
@@ -109,24 +109,24 @@ const SavePrompt = ({route, navigation}) => {
 
     setLoading(true);
     try {
-      const {currentUser} = auth();
-      const {uid} = currentUser;
+      const { currentUser } = auth();
+      const { uid } = currentUser;
       const documentSnapshot = await firestore()
-        .collection('users')
+        .collection("users")
         .doc(uid)
         .get();
       const {
-        account: {expirationTimestamp},
+        account: { expirationTimestamp },
       } = documentSnapshot.data();
       const expirationDate = expirationTimestamp?.toDate();
 
       if (!expirationDate || Date.now() > expirationDate) {
         Alert.alert(
-          'Report upload disabled',
-          'Please sign in to the Commandability web portal to check your account status.',
+          "Report upload disabled",
+          "Please sign in to the Commandability web portal to check your account status.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
@@ -139,20 +139,20 @@ const SavePrompt = ({route, navigation}) => {
         setLoading(false);
         dispatch(toHomeStack());
         Alert.alert(
-          'Upload completed successfully',
-          'The report has been uploaded and removed from the device.',
+          "Upload completed successfully",
+          "The report has been uploaded and removed from the device.",
           [
             {
-              text: 'OK',
+              text: "OK",
             },
           ],
         );
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert('Error', error, [
+      Alert.alert("Error", error.message, [
         {
-          text: 'OK',
+          text: "OK",
         },
       ]);
     }
@@ -171,10 +171,11 @@ const SavePrompt = ({route, navigation}) => {
     <ErrorBoundary
       FallbackComponent={ErrorFallbackScreen}
       onReset={onReset}
-      resetKeys={[loading, numberOfReports]}>
+      resetKeys={[loading, numberOfReports]}
+    >
       <StatusBar
-        barStyle={theme === DARK ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
+        barStyle={theme === DARK ? "light-content" : "dark-content"}
+        backgroundColor={"transparent"}
         translucent={true}
       />
       <BackButton />
@@ -208,7 +209,7 @@ const SavePrompt = ({route, navigation}) => {
         <ActivityIndicator
           style={globalStyles.activityIndicator}
           color={colors.primary}
-          size={'large'}
+          size={"large"}
         />
       ) : null}
     </ErrorBoundary>

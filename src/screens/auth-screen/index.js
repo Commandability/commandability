@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
   View,
+  Platform,
   KeyboardAvoidingView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -101,7 +102,10 @@ const AuthScreen = () => {
         backgroundColor={"transparent"}
         translucent={true}
       />
-      <KeyboardAvoidingView style={globalStyles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={globalStyles.container}
+      >
         <View style={globalStyles.flex} />
         <View style={globalStyles.flex}>
           <View style={globalStyles.content}>

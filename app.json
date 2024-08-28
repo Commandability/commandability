@@ -2,7 +2,7 @@
   "expo": {
     "name": "Commandability",
     "slug": "commandability-app",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
@@ -22,7 +22,8 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.commandability",
-      "supportsTablet": true
+      "isTabletOnly": true,
+      "requireFullScreen": true
     },
     "plugins": [
       "@react-native-firebase/app",
@@ -35,6 +36,12 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ea5c946c-db6b-4c9c-a42b-9b753eac0581"
+      }
+    },
+    "owner": "commandability"
   }
 }

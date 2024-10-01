@@ -29,7 +29,6 @@ export default (colors) =>
     opacityText: {
       color: colors.text.main,
       fontFamily: "ClearSans-Regular",
-      // fontFamily: "SpaceMono-Regular",
       fontSize: 48,
     },
     opacityIcon: {

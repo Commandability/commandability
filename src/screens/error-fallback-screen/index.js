@@ -126,30 +126,38 @@ const ErrorFallbackScreen = ({ error, resetErrorBoundary }) => {
         backgroundColor={"transparent"}
         translucent={true}
       />
-      <View style={globalStyles.content}>
-        <View style={globalStyles.prompt}>
-          <Text style={globalStyles.promptHeader}>Something went wrong:</Text>
-          <Text style={globalStyles.promptText}>{error.message}</Text>
+      <View style={globalStyles.container}>
+        <View style={globalStyles.flex} />
+        <View style={globalStyles.flex}>
+          <View style={globalStyles.content}>
+            <View style={globalStyles.prompt}>
+              <Text style={globalStyles.promptHeader}>
+                Something went wrong:
+              </Text>
+              <Text style={globalStyles.promptText}>{error.message}</Text>
+            </View>
+            <LargeButton
+              text="Try again"
+              onPress={resetErrorBoundary}
+              icon="rotate-ccw"
+            />
+            {currentUser ? (
+              <LargeButton
+                text="Emergency upload"
+                onPress={onEmergencyUploadPressed}
+                icon="upload"
+              />
+            ) : null}
+            {loading ? (
+              <ActivityIndicator
+                style={globalStyles.activityIndicator}
+                color={colors.primary}
+                size={"large"}
+              />
+            ) : null}
+          </View>
         </View>
-        <LargeButton
-          text="Try again"
-          onPress={resetErrorBoundary}
-          icon="rotate-ccw"
-        />
-        {currentUser ? (
-          <LargeButton
-            text="Emergency upload"
-            onPress={onEmergencyUploadPressed}
-            icon="upload"
-          />
-        ) : null}
-        {loading ? (
-          <ActivityIndicator
-            style={globalStyles.activityIndicator}
-            color={colors.primary}
-            size={"large"}
-          />
-        ) : null}
+        <View style={globalStyles.flex} />
       </View>
     </>
   );

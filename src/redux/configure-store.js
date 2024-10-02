@@ -5,20 +5,25 @@
  */
 
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
-// import {compose} from 'redux'; // Development only
 import { thunk } from "redux-thunk";
 import { persistStore } from "redux-persist";
 
+/* Development only */
+// import { composeWithDevTools } from "redux-devtools-expo-dev-plugin";
+
 import persistedReducers from "./reducers";
 
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // Development only
-
 export default () => {
+  /* Production only */
   let store = createStore(
     persistedReducers,
-    applyMiddleware(thunk), // Production only
-    // composeEnhancers(applyMiddleware(thunk)), // Development only
+    applyMiddleware(thunk),
   );
+  /* Development only */
+  // let store = createStore(
+  //   persistedReducers,
+  //   composeWithDevTools(applyMiddleware(thunk))
+  // );
   let persistor = persistStore(store);
   return { store, persistor };
 };

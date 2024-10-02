@@ -37,7 +37,6 @@ const NewPersonnelItem = ({ personId }) => {
       {
         text: "OK",
         onPress: () => {
-          setPersonIsSelected(false);
           isTemporary
             ? // Remove each temporary selected personId
               dispatch(removePerson(person))
